@@ -1,7 +1,7 @@
 "use client"
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
@@ -23,11 +23,17 @@ const Navbar = () => {
   const[openFav,setOpenFav]=useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const user = localStorage.getItem("accessToken");
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
 
 
   return (
-    <div className='w-full fixed p-3 text-white  bg-pink-300 shadow-2xl z-40'>
+    <div className='w-full fixed p-3 text-white  bg-pink-200 shadow-2xl z-40'>
       <div className='container flex items-center justify-between h-16'>
         <Link className='font-extrabold text-3xl hover:text-pink-950 transition-all' href="/">
         takiShop
@@ -92,7 +98,7 @@ const Navbar = () => {
               <DropdownMenuLabel className="text-center font-semibold">Favoriler</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {/* Sepet bilgisi */}
-              <Button variant='mybutton'>Favorilere git</Button>
+              <Button variant='myButton'>Favorilere git</Button>
               </DropdownMenuContent>
           </DropdownMenu>
 

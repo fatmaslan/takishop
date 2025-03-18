@@ -13,7 +13,7 @@ const ProductItem = () => {
   if (!products || products.length === 0) return <p>Ürün bulunamadi.</p>;
 
   return (
-    <div className="grid grid-cols-3 gap-6 p-4 bg-pink-100">
+    <div className="grid grid-cols-2 gap-6 p-4 bg-pink-100">
       {products.map((product) => {
         const imageUrl =
           product.images.length > 0
