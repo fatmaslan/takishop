@@ -40,3 +40,27 @@ export const useAllProducts = () => {
   
     return { products, error, loading };
   };
+
+export const useCarousel=()=>{
+  const [carousel,setCarousel]=useState<ProductProps[] | null>(null);
+  const [error,setError]=useState<string | null>(null);
+  const [loading,setLoading]=useState<boolean>(true);
+
+  useEffect(()=>{
+    const fetchCarousel=async()=>{
+      setLoading(true);
+      try{
+        const response=await axios.get("http://127.0.0.1:8000/api/carousals/",)
+        setCarousel(response.data);
+      }catch(error){
+        if(error instanceof Error){
+          setError(error.message);
+        }
+      }finally{
+        setLoading(false);
+      }
+    };  
+    fetchCarousel();
+  },[]);
+  return {carousel,error,loading};
+}

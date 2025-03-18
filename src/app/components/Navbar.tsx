@@ -27,7 +27,7 @@ const Navbar = () => {
 
 
   return (
-    <div className='w-full fixed p-3 text-white  bg-pink-200 shadow-2xl z-40'>
+    <div className='w-full fixed p-3 text-white  bg-pink-300 shadow-2xl z-40'>
       <div className='container flex items-center justify-between h-16'>
         <Link className='font-extrabold text-3xl hover:text-pink-950 transition-all' href="/">
         takiShop
