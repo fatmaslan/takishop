@@ -1,9 +1,10 @@
+import ProductItem from "./components/ProductItem";
 
 
 export default function Home() {
   return (
-<div>
-  home
+<div className="mt-22">
+  <ProductItem/>
 </div>
   );
 }
