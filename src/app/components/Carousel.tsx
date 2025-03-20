@@ -24,6 +24,7 @@ const CarouselPage = () => {
   if (!carousel || carousel.length === 0) return <p>Ürün bulunamadi.</p>;
 
   return (
+    <div className="w-full overflow-x-hidden"> 
     <Carousel
       plugins={[plugin.current]}
       className="w-full max-w-[1500px]  bg-pink-100"
@@ -58,6 +59,7 @@ const CarouselPage = () => {
         <CarouselNext />
       </div>
     </Carousel>
+    </div>
   );
 };
 

@@ -148,3 +148,29 @@ export const useDetailProducts = (productId: string) => {
 
   return { products, error, loading };
 };
+export const useHomeProducts = () => {
+  const [products, setProducts] = useState<ProductProps[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/products/discounted/`);
+        setProducts(response.data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };fetchProducts();
+    
+  }, []); 
+
+  return { products, error, loading };
+};
