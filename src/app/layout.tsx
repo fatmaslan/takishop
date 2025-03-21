@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { CartProvider } from "./context/CartContext";
+import { FavProvider } from "./context/FavContext";
 
 
 const geistSans = Geist({
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <FavProvider>
         <CartProvider> 
         <Navbar/>
        
@@ -40,6 +42,7 @@ export default function RootLayout({
         </div>
         <Footer/>
         </CartProvider>
+        </FavProvider>
       </body>
     </html>
   );

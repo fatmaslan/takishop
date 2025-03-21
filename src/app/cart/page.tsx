@@ -5,6 +5,10 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { MdDeleteOutline } from "react-icons/md";
 import Link from 'next/link';
+
+
+
+
 const CartPage = () => {
   const { cart, removeFromCart } = useCart();
   const totalPrice = cart?.items?.reduce((total, item) => {

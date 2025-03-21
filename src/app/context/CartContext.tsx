@@ -31,6 +31,7 @@ type CartType = {
   user: number;
   product: Product;
   created_at: string;
+  item:number;
   items: CartItem[];
 }
 const CartContext = createContext<{

@@ -19,16 +19,17 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "../context/CartContext";
+import { useFavorites } from "../context/FavContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openFav, setOpenFav] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { cart, updateCart } = useCart();
+  const { cart, updateCart } = useCart() as { cart: CartType; updateCart: () => void };
   const [openShop, setOpenShop] = useState(false);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
-
+  const { fav, updateFav } = useFavorites();
 
   const totalItems = cart?.items?.length || 0;
   useEffect(() => {
@@ -37,32 +38,40 @@ const Navbar = () => {
       setIsAuthenticated(true);
     }
   }, []);
+
+  const totalFavs = fav?.length || 0;
+  useEffect(() => {
+    const user = localStorage.getItem("accessToken");
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
   const handleLogout = () => {
-    localStorage.removeItem("accessToken"); 
+    localStorage.removeItem("accessToken");
     setIsAuthenticated(false);
-    updateCart(); 
+    updateCart();
+    updateFav();
     router.push("/login");
   };
 
-const handleSearch = ()=>{
-  if (searchTerm.trim()) {
-    router.push(`/search/${encodeURIComponent(searchTerm)}`);
-    setSearchTerm(" ");
-  }
-}
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      router.push(`/search/${encodeURIComponent(searchTerm)}`);
+      setSearchTerm(" ");
+    }
+  };
 
-const handleKeyDown = (e) => {
-  if (e.key === 'Enter'){
-    handleSearch();
-  }
-}
-
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
-    <div className="w-full fixed p-3 text-white  bg-pink-300 shadow-2xl z-40">
+    <div className="w-full fixed p-3 text-pink-950  bg-pink-100 shadow-2xl z-40">
       <div className="container flex items-center justify-between h-16">
         <Link
-          className="font-extrabold text-3xl hover:text-pink-950 transition-all"
+          className="font-extrabold text-3xl  text-pink-950 hover:text-white transition-all"
           href="/"
         >
           takiShop
@@ -75,7 +84,10 @@ const handleKeyDown = (e) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={handleKeyDown}
           ></Input>
-          <IoSearchOutline onClick={handleSearch} className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-pink-950 " />
+          <IoSearchOutline
+            onClick={handleSearch}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-pink-950 "
+          />
         </div>
         <div className="flex gap-5 ">
           <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -107,10 +119,14 @@ const handleKeyDown = (e) => {
                     <Link href="/profile">Profilim</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/orders">Siparişlerim</Link>
+                    <Link href="/cart">Siparişlerim</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Button onClick={handleLogout} variant="myButton2" className="w-full">
+                    <Button
+                      onClick={handleLogout}
+                      variant="myButton2"
+                      className="w-full"
+                    >
                       Çikiş Yap
                     </Button>
                   </DropdownMenuItem>
@@ -124,6 +140,11 @@ const handleKeyDown = (e) => {
             <DropdownMenuTrigger asChild>
               <div className="relative cursor-pointer hover:text-pink-950 ">
                 <FaRegHeart size={24} />
+                {totalFavs > 0 && (
+                  <span className="bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    {totalFavs}
+                  </span>
+                )}
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-72 bg-white shadow-lg rounded-md p-3 max-h-96 overflow-y-auto">
@@ -131,9 +152,40 @@ const handleKeyDown = (e) => {
                 Favoriler
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              {totalFavs === 0 ? (
+                <p className="text-center text-gray-500">Favoriniz yok</p>
+              ) : (
+                <div className="space-y-3">
+                  {fav.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 border-b pb-2"
+                    >
+                      {item.product.images.length > 0 && (
+                        <Image
+                          src={item.product.images[0].image_url}
+                          alt={item.product.name}
+                          width={50}
+                          height={50}
+                          className="rounded-md"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">
+                          {item.product.name}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {item.product.price}₺
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               <Button
-                variant="myButton"
+                variant="myButton2"
                 className="flex w-full items-center justify-center"
+                onClick={() => router.push("/favorites")}
               >
                 Favorilere git
               </Button>
@@ -148,10 +200,10 @@ const handleKeyDown = (e) => {
 
                 {/* cartuzunluğu */}
                 {totalItems > 0 && (
-            <span className="bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
-              {totalItems}
-            </span>
-          )}
+                  <span className="bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold absolute -top-2 -right-2">
+                    {totalItems}
+                  </span>
+                )}
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-72 bg-white shadow-lg rounded-md p-3 max-h-96 overflow-y-auto">
@@ -163,8 +215,7 @@ const handleKeyDown = (e) => {
                 <p className="text-center text-gray-500">Sepetiniz boş</p>
               ) : (
                 <div className="space-y-3">
-                 {cart?.items.map((item) => (
-                  
+                  {cart?.items.map((item) => (
                     <div
                       key={item.id}
                       className="flex items-center gap-3 border-b pb-2"
@@ -192,7 +243,7 @@ const handleKeyDown = (e) => {
 
               <Button
                 onClick={() => router.push("/cart")}
-                variant="myButton"
+                variant="myButton2"
                 className="flex w-full items-center justify-center"
               >
                 Sepete git

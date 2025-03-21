@@ -14,6 +14,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CiHeart } from "react-icons/ci";
 import { useCart } from "@/app/context/CartContext";
+import { useFavorites } from "@/app/context/FavContext";
 
 const Detailpage = () => {
   const plugin = React.useRef(
@@ -23,6 +24,7 @@ const Detailpage = () => {
   const productId = params.id as string;
   const { products, error, loading } = useDetailProducts(productId);
   const { addToCart } = useCart();
+  const { addToFav }=useFavorites();
 
   if (loading) return <p className="mt-44">Yükleniyor...</p>;
   if (error) return <p className="mt-44">Hata oluştu: {error}</p>;
@@ -63,7 +65,7 @@ const Detailpage = () => {
         <div className="flex flex-col gap-6">
           <h2 className="font-bold text-pink-950 text-3xl">{product.name}</h2>
           <p className="text-gray-700 text-base leading-6">
-            <span className="text-pink-950 font-semibold">Ürün hakkında: </span>
+            <span className="text-pink-950 font-semibold">Ürün hakkinda: </span>
             {product.description}
           </p>
           <h3 className="text-red-600 text-2xl font-bold">
@@ -71,6 +73,10 @@ const Detailpage = () => {
           </h3>
           <div className="flex flex-wrap gap-4 mt-6">
             <Button
+            onClick={()=>{
+              console.log("favori ekleme butonuna tiklandi");
+              addToFav(product.id)
+            }}
               variant="myButton2"
               className=" flex items-center justify-center"
             >
