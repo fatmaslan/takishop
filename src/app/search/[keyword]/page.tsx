@@ -42,7 +42,7 @@ const Searchpage = () => {
     fetchProducts()
   },[keyword, decodedKeyword])
   return (
-    <div className='mt-22'>
+    <div className='mt-22 bg-pink-100'>
       <div className="mt-24 flex ">
       {loading ? (
         <p className="flex items-center justify-center mt-32 ">

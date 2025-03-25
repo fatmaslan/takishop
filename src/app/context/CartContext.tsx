@@ -26,7 +26,7 @@ type CartItem = {
   total:number;
   item: number;
 };
-type CartType = {
+ type CartType = {
   id: number;
   user: number;
   product: Product;
