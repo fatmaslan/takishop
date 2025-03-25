@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: false,
   images: {
     domains: ['localhost', '127.0.0.1'],  // 'localhost' ve '127.0.0.1' ekliyoruz
     remotePatterns: [
