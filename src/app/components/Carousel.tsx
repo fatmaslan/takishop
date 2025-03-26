@@ -24,16 +24,16 @@ const CarouselPage = () => {
   if (!carousel || carousel.length === 0) return <p>Ürün bulunamadi.</p>;
 
   return (
-    <div className="w-full overflow-x-hidden"> 
+    <div className="w-full overflow-x-hidden bg-pink-100"> 
     <Carousel
       plugins={[plugin.current]}
-      className="w-full max-w-[1500px]  bg-pink-100"
+      className="w-full max-w-[1500px] max-h-[500px]   "
     >
       <CarouselContent className="gap-4">
         {carousel.map((item) =>
           item.images.map((img) => (
             <CarouselItem key={img.id} className="w-full">
-              <Card className="w-full border-none shadow-none">
+              <Card className="w-full border-none shadow-none bg-pink-100">
                 <CardContent className="relative w-full h-[400px] p-0">
                   <Image
                     src={

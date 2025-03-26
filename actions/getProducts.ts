@@ -7,7 +7,7 @@ interface ProductImage {
   id: number;
   image_url: string;  
   images:string;
-  
+  image:string;
   product_id:number;
   
 }
@@ -96,6 +96,7 @@ export const useCategories=()=>{
 
   return { categories, error, loading };
 };
+
 export const useDetailCategories = (categoryId: string) => {
   const [categories, setCategories] = useState<ProductProps[] | null>(null);
   const [error, setError] = useState<string | null>(null);

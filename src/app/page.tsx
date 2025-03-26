@@ -5,7 +5,7 @@ import ProductItem from "./components/ProductItem";
 
 export default function Home() {
   return (
-<div className="mt-16">
+<div className="mt-16 bg-pink-100">
  <Categories/>
   <Carousel/>
   <ProductItem/>
